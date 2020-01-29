@@ -1,81 +1,13 @@
 import React from "react";
 import Link from "./Link";
-import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { LINKS_PER_PAGE } from "../contants";
 import { isNewPage, pageIndex } from "../utils";
-
-export const FEED_QUERY = gql`
-  query FeedQuery($first: Int, $skip: Int, $orderBy: LinkOrderByInput) {
-    feed(first: $first, skip: $skip, orderBy: $orderBy) {
-      links {
-        id
-        createdAt
-        url
-        description
-        postedBy {
-          id
-          name
-        }
-        votes {
-          id
-          user {
-            id
-          }
-        }
-      }
-      count
-    }
-  }
-`;
-
-const NEW_LINKS_SUBSCRIPTION = gql`
-  subscription {
-    newLink {
-      id
-      url
-      description
-      createdAt
-      postedBy {
-        id
-        name
-      }
-      votes {
-        id
-        user {
-          id
-        }
-      }
-    }
-  }
-`;
-
-const NEW_VOTES_SUBSCRIPTION = gql`
-  subscription {
-    newVote {
-      id
-      link {
-        id
-        url
-        description
-        createdAt
-        postedBy {
-          id
-          name
-        }
-        votes {
-          id
-          user {
-            id
-          }
-        }
-      }
-      user {
-        id
-      }
-    }
-  }
-`;
+import { FEED_QUERY } from "../resolvers/queries";
+import {
+  NEW_LINKS_SUBSCRIPTION,
+  NEW_VOTES_SUBSCRIPTION
+} from "../resolvers/subscriptions";
 
 const LinkList = props => {
   const _updateCacheAfterVote = (store, createVote, linkId) => {

@@ -35,6 +35,11 @@ export const timeDifferenceForDate = date => {
   return timeDifference(now, updated);
 };
 
+export const getDomain = url => {
+  var matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+  return matches && matches[1]; // domain will be null if no match is found
+};
+
 export const isNewPage = props => props.location.pathname.includes("new");
 export const pageIndex = props =>
   props.match.params.page ? (props.match.params.page - 1) * LINKS_PER_PAGE : 0;

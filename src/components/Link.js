@@ -1,30 +1,11 @@
 import React from "react";
-import gql from "graphql-tag";
-import { AUTH_TOKEN } from "../contants";
-import { timeDifferenceForDate } from "../utils";
 import { Mutation } from "react-apollo";
+import { AUTH_TOKEN } from "../contants";
+import { timeDifferenceForDate, getDomain } from "../utils";
+import { VOTE_MUTATION } from "../resolvers/mutations";
 
 const Link = props => {
   const authToken = localStorage.getItem(AUTH_TOKEN);
-  const VOTE_MUTATION = gql`
-    mutation VoteMutation($linkId: ID!) {
-      vote(linkId: $linkId) {
-        id
-        link {
-          id
-          votes {
-            id
-            user {
-              id
-            }
-          }
-        }
-        user {
-          id
-        }
-      }
-    }
-  `;
 
   return (
     <div className="flex mt2 items-start">
@@ -39,7 +20,7 @@ const Link = props => {
             }
           >
             {voteMutation => (
-              <div className="ml1 gray f11" onClick={voteMutation}>
+              <div className="ml1 gray f11 pointer" onClick={voteMutation}>
                 ▲
               </div>
             )}
@@ -48,9 +29,15 @@ const Link = props => {
       </div>
       <div className="ml1">
         <div>
-          {props.link.description} ({props.link.url})
+          <span className="f6">{props.link.description} </span>{" "}
+          <a
+            className="f7 gray no-underline underline-hover"
+            href={props.link.url}
+          >
+            ({getDomain(props.link.url)})
+          </a>
         </div>
-        <div className="f6 lh-copy gray">
+        <div className="f7 lh-copy gray">
           {props.link.votes.length} votes | by{" "}
           {props.link.postedBy ? props.link.postedBy.name : "Unknown"}{" "}
           {timeDifferenceForDate(props.link.createdAt)}

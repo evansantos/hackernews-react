@@ -1,22 +1,12 @@
 import React, { useState } from "react";
-import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import { FEED_QUERY } from "./LinkList";
+import { FEED_QUERY } from "../resolvers/queries";
+import { POST_MUTATION } from "../resolvers/mutations";
 import { LINKS_PER_PAGE } from "../contants";
 
 const CreateLink = props => {
   const [description, setDescription] = useState("");
   const [url, setUrl] = useState("");
-
-  const POST_MUTATION = gql`
-    mutation PostMutation($description: String!, $url: String!) {
-      post(description: $description, url: $url) {
-        id
-        url
-        description
-      }
-    }
-  `;
 
   return (
     <>

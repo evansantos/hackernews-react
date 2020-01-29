@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { AUTH_TOKEN } from "../contants";
-import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+import { AUTH_TOKEN } from "../contants";
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../resolvers/mutations";
 
 const _confirm = async (data, login, history) => {
   const { token } = login ? data.login : data.signup;
@@ -20,26 +20,6 @@ const Login = props => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const { history } = props;
-
-  const SIGNUP_MUTATION = gql`
-    mutation SignupMutation(
-      $email: String!
-      $password: String!
-      $name: String!
-    ) {
-      signup(email: $email, password: $password, name: $name) {
-        token
-      }
-    }
-  `;
-
-  const LOGIN_MUTATION = gql`
-    mutation LoginMutation($email: String!, $password: String!) {
-      login(email: $email, password: $password) {
-        token
-      }
-    }
-  `;
 
   return (
     <>
