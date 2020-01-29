@@ -2,7 +2,7 @@ import React from "react";
 import Link from "./Link";
 import { Query } from "react-apollo";
 import { LINKS_PER_PAGE } from "../contants";
-import { isNewPage, pageIndex } from "../utils";
+import { isNewPage, pageIndex, queryParams, getPage } from "../utils";
 import { FEED_QUERY } from "../resolvers/queries";
 import {
   NEW_LINKS_SUBSCRIPTION,
@@ -11,14 +11,9 @@ import {
 
 const LinkList = props => {
   const _updateCacheAfterVote = (store, createVote, linkId) => {
-    const page = parseInt(props.match.params.page, 10);
-
-    const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
-    const first = isNewPage ? LINKS_PER_PAGE : 100;
-    const orderBy = isNewPage ? "createdAt_DESC" : null;
     const data = store.readQuery({
       query: FEED_QUERY,
-      variables: { first, skip, orderBy }
+      variables: queryParams(getPage(props))
     });
 
     const votedLink = data.feed.links.find(link => link.id == linkId);
@@ -54,15 +49,7 @@ const LinkList = props => {
     });
   };
 
-  const _getQueryVariables = () => {
-    const page = parseInt(props.match.params.page, 10);
-
-    const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
-    const first = isNewPage ? LINKS_PER_PAGE : 100;
-    const orderBy = isNewPage ? "createdAt_DESC" : null;
-
-    return { first, skip, orderBy };
-  };
+  const _getQueryVariables = () => queryParams(getPage(props));
 
   const _getLinksToRender = data => {
     if (isNewPage(props)) {
@@ -76,7 +63,7 @@ const LinkList = props => {
   };
 
   const _previousPage = () => {
-    const page = parseInt(props.match.params.page, 10);
+    const page = getPage(props);
     if (page > 1) {
       const previousPage = page - 1;
 
@@ -85,7 +72,7 @@ const LinkList = props => {
   };
 
   const _nextPage = data => {
-    const page = parseInt(props.match.params.page, 10);
+    const page = getPage(props);
     if (page <= data.feed.count / LINKS_PER_PAGE) {
       const nextPage = page + 1;
 
