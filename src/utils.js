@@ -1,12 +1,13 @@
-import { LINKS_PER_PAGE } from "./contants";
+import {
+  LINKS_PER_PAGE,
+  MILLISECONDSPERMINUTE,
+  MILLISECONDSPERHOUR,
+  MILLISECONDSPERDAY,
+  MILLISECONDSPERMONTH,
+  MILLISECONDSPERYEAR
+} from "./contants";
 
 const timeDifference = (current, previous) => {
-  const MILLISECONDSPERMINUTE = 60 * 1000;
-  const MILLISECONDSPERHOUR = MILLISECONDSPERMINUTE * 60;
-  const MILLISECONDSPERDAY = MILLISECONDSPERHOUR * 24;
-  const MILLISECONDSPERMONTH = MILLISECONDSPERDAY * 30;
-  const MILLISECONDSPERYEAR = MILLISECONDSPERDAY * 365;
-
   const elapsed = current - previous;
 
   if (elapsed < MILLISECONDSPERMINUTE / 3) {
@@ -36,7 +37,7 @@ export const timeDifferenceForDate = date => {
 };
 
 export const getDomain = url => {
-  var matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+  var matches = url.match(/^https?:\/\/([^/?#]+)(?:[/?#]|$)/i);
   return matches && matches[1]; // domain will be null if no match is found
 };
 

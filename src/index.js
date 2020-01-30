@@ -42,7 +42,7 @@ const authLink = setContext((_, { headers }) => {
 const link = split(
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
-    return kind == "OperationDefinition" && operation == "subscription";
+    return kind === "OperationDefinition" && operation === "subscription";
   },
   wsLink,
   authLink.concat(httpLink)

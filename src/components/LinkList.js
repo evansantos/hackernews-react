@@ -16,7 +16,7 @@ const LinkList = props => {
       variables: queryParams(getPage(props))
     });
 
-    const votedLink = data.feed.links.find(link => link.id == linkId);
+    const votedLink = data.feed.links.find(link => link.id === linkId);
     votedLink.votes = createVote.link.votes;
 
     store.writeQuery({ query: FEED_QUERY, data });
@@ -28,7 +28,7 @@ const LinkList = props => {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const newLink = subscriptionData.data.newLink;
-        const exists = prev.feed.links.find(({ id }) => id == newLink.id);
+        const exists = prev.feed.links.find(({ id }) => id === newLink.id);
 
         if (exists) return prev;
 
